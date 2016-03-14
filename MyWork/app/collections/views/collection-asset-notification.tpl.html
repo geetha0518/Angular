@@ -1,0 +1,48 @@
+﻿<div class="collection-notification-modal">
+    <div class="modal-header">
+        <i class="fa fa-times-circle fa-2x pull-right" ng-click="closeModal()"></i>
+        <h3 class="modal-title text-left" >Collection Notification</h3>
+    </div>
+
+    <div class="modal-body">
+        <div class="collection-list">
+            <div class="row">
+                <div class="col-md-12">
+                    <h5>Collections Selected ({{collections.length}})</h5>
+                    <div class="collections well">
+                        <ul>
+                            <li ng-repeat="collection in collections | orderBy :'name'">
+                                {{collection.name | shorten:50:10}}  
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" ng-if="hasError()">
+            <div class="col-md-12">
+                <span class="error" > {{errorMessage}}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-warning"
+                ng-click="closeModal()"
+                ng-if="!notificationSent">
+            Cancel
+        </button>
+
+        <button class="btn btn-success" ng-click="Notify()"
+                ng-if="!hasError()" ng-disabled="isSendingProcess">
+            {{notfyButtonText()}}
+        </button>
+
+
+        <button class="btn btn-success" ng-click="closeModal()"
+                ng-if="hasError()">
+            {{ doneButtonText() }}
+        </button>
+
+    </div>
+</div>

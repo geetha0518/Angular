@@ -1,0 +1,5 @@
+﻿<div class="user-experience-footer" ng-class="{'fixed-footer': isFixed()}">
+    <!-- FIC has a custom footer. All other users are shown the defaul FMC footer. -->
+    <fic-footer ng-if="ClientUserService.isFic"></fic-footer>
+    <fmc-footer ng-if="!ClientUserService.isFic"></fmc-footer>
+</div>

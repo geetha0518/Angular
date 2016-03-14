@@ -1,0 +1,54 @@
+﻿<div id="asset-preview">
+    <div id="right-panel-top">
+        <moby-checkbox selected="asset.selected"></moby-checkbox>
+        <a class="btn"
+           ng-click="viewAssetDetails(asset.assetId)">
+            View Details
+            <i class="glyphicon glyphicon-chevron-right"></i>
+        </a>
+    </div>
+
+    <div id="right-panel-body">
+        <div class="asset_details">
+            <asset-detail-thumbnail thumb-image-url="asset.thumb"
+                                    zoom-image-url="asset.zoomSource.image"
+                                    is-thumbnail-loading="false"
+                                    is-zoom-loading="asset.zoomSource.isLoading"
+                                    has-restrictions="hasRestrictions()"
+                                    allow-zoom="allowImageZoom()"
+                                    zoom-style="left">
+            </asset-detail-thumbnail>
+
+            <quickview-metadata></quickview-metadata>
+
+            <asset-restrictions asset="asset"></asset-restrictions>
+
+            <div id="asset-preview-collections" ng-if="asset.collections.length > 0">
+                <div ng-repeat="collection in asset.collections | orderBy: 'title'">
+                    <collection-link collection="collection"></collection-link>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="asset-preview-buttons">
+    <div class="btn-group input-group btn-group-justified" data-toggle="buttons">
+
+        <div id="collection-btn-format" class="btn btn-default"
+             ng-if="permissions.collectionAssetAdd && isACollectionOwner"
+             ng-click='showAddAssetsToCollectionDialog(asset)'>
+            <div><i class="glyphicon glyphicon-plus-sign"></i></div>
+            <div class="button-name">Collection</div>
+        </div>
+        <div id="download-btn-format" ng-if="permissions.assetDownload" class="btn btn-default" ng-click="openDownloadDialog(asset)">
+            <div><i class="glyphicon glyphicon-download-alt"></i></div>
+            <div class="button-name">Download</div>
+        </div>
+
+        <div id="download-btn-format" ng-if="!permissions.assetDownload" class="btn btn-default disabled">
+            <div><i class="glyphicon glyphicon-download-alt"></i></div>
+            <div class="button-name">Download</div>
+        </div>
+    </div>
+</div>

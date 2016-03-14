@@ -1,0 +1,29 @@
+﻿<div class="create-new-collection">
+    <h1>Create a New Collection</h1>
+    <div>
+        <!-- Put Wizard Steps here -->
+    </div>
+    <div>
+        <h2>Define Your Collection</h2>
+        <div>Give your collection a name and definition. These can be changed later.</div>
+    </div>
+    <div class="row">
+        <div class="col-lg-2"><strong>Name</strong></div>
+
+        <div class="col-lg-8"><input type="text" spaceholder="Enter the collection name" ng-model="collection.name" /></div>
+    </div>
+    <div class="row">
+        <div class="col-lg-2"><strong>Description</strong></div>
+        <div class="col-lg-2 pull-right">Optional</div>
+        <div class="col-lg-8"><textarea spaceholder="Enter the collection description" ng-model="collection.description"></textarea></div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="btn btn-block pull-right">
+                <a class="btn btn-default" ng-click="cancel()">Cancel</a>
+                <a class="btn btn-default" ng-click="create()">Create Collection</a>
+                <a class="btn btn-primary" ng-click="next()">Add Members</a>
+            </div>
+        </div>
+    </div>
+</div>

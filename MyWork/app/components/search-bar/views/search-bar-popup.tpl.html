@@ -1,0 +1,11 @@
+﻿<div class="dropdown-menu search-bar-popup" ng-cloak ng-style="{display: isOpen() && 'block' || 'none', top: position.top, left: position.left}">
+    <div class="suggestions">
+        <div ng-repeat="prompt in prompts">
+            <search-bar-prompt prompt="prompt"></search-bar-prompt>
+        </div>
+    </div>
+    <div class="view-all all_suggestions" ng-if="showViewAll" ng-click="openSuggestionsDialog(prompts)">
+        All Suggestions &raquo;
+        <span class="badge pull-right">{{suggestionCount}}</span>
+    </div>
+</div>

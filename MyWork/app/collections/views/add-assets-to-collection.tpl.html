@@ -1,0 +1,35 @@
+﻿<div class="add-to-collection">
+    <div class="modal-header">
+        <i class="fa fa-times-circle fa-2x pull-right" ng-click="closeModal()"></i>
+        <h3 class="modal-title text-left" ng-if="assets.length === 1">Add Asset to Collections</h3>
+        <h3 class="modal-title text-left" ng-if="assets.length !== 1">Add Assets to Collections</h3>
+    </div>
+
+    <div class="modal-body">
+        <loading isloading="loadingResponse">
+            <add-assets-to-collection-choose ng-if="!submitted && !hasError()"></add-assets-to-collection-choose>
+            <add-assets-to-collection-response ng-if="submitted && !hasError()"></add-assets-to-collection-response>
+
+            <div class="well" ng-if="hasError()">
+                <i class="fa fa-warning fa-2x warning-color"></i>  {{errorMessage}}
+            </div>
+        </loading>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-warning" ng-hide="hideDeleteCancelButton"
+                ng-click="closeModal()">
+            Cancel
+        </button>
+
+        <button class="btn btn-success" ng-hide="hideDeleteCancelButton"
+                ng-click="add()" ng-disabled="selectedCollections().length === 0">
+            Add
+        </button>
+
+        <button class="btn btn-success" ng-hide="!hideDeleteCancelButton"
+                ng-click="closeModal()">
+            Done
+        </button>
+    </div>
+</div>

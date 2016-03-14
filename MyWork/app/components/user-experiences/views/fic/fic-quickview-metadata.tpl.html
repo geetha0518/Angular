@@ -1,0 +1,20 @@
+﻿<li ng-if="asset.ficShowName">{{asset.ficShowName}}</li>
+<li ng-if="asset.ficSeasonName">{{asset.ficSeasonName}}</li>
+<li ng-if="asset.ficEpisodeName"><span ng-if="asset.ficEpisodeNumber">{{asset.ficEpisodeNumber}}</span> - {{asset.ficEpisodeName}}</li>
+<li ng-if="asset.ficParadigmId">{{asset.ficParadigmId}}</li>
+<li ng-if="asset.ficVersionName">{{asset.ficVersionName}}</li>
+<li ng-if="asset.ficYearOfProduction">{{asset.ficYearOfProduction}}</li>
+<li ng-if="asset.ficTerritory">{{asset.ficTerritory}}</li>
+<li ng-if="asset.subAssetType">{{asset.subAssetType}}</li>
+<li ng-if="asset.ficIsoConformedLanguage">{{asset.ficIsoConformedLanguage}}</li>
+<li ng-if="asset.ficIsoSubtitleLanguage">{{asset.ficIsoSubtitleLanguage}}</li>
+<li ng-if="asset.ccFileFormat">{{asset.ccFileFormat}}</li>
+<li ng-if="asset.subtitleType">{{asset.subtitleType}}</li>
+<li ng-if="asset.aperture">{{asset.aperture}}</li>
+<li ng-if="asset.canvasAspectRatio">{{asset.canvasAspectRatio}}</li>
+<li ng-if="asset.videoAspectRatio">{{asset.videoAspectRatio}}</li>
+<li ng-if="asset.resolution">{{asset.resolution}}</li>
+<li ng-if="asset.videoBitrate">{{asset.videoBitrate}}</li>
+<li ng-if="asset.fieldCodec">{{asset.fieldCodec}}</li>
+<li ng-if="asset.audioCodec">{{asset.audioCodec}}</li>
+<li ng-if="asset.uploadedOn">Uploaded: {{ asset.uploadedOn | date:'MM/dd/yyyy'}}</li>

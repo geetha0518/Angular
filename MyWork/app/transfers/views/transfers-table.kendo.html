@@ -1,0 +1,35 @@
+﻿<div class="user-collections">
+    <div class="row">
+        <div class="row tuck-under">
+            <div class="col-md-10 col-md-offset-1">
+                <loading isloading="loadingCollections">
+                    <div class="empty-search-results" ng-if="!grids.belongToCollections.options.dataSource.data().length">
+                        No transfers to show currently.
+                    </div>
+
+                    <div ng-if="grids.belongToCollections.options.dataSource.data().length"
+                         kendo-grid k-options="grids.belongToCollections.options"></div>
+                </loading>
+            </div>
+        </div>
+    </div>
+    <!-- Row Template -->
+    <script id="rowTemplate" type="text/x-kendo-template">
+        <tr>
+            <td>
+                <a ng-click="viewAssetDetails(asset.assetId , asset.filename)"
+                   title="{{ asset.filename}}"
+                   class="previewlabel">
+                    {{ asset.filename | shorten:10:4 }}
+                </a>
+            </td>
+            <td>{{ asset.transactionId }}</td>
+            <td>{{ asset.requestedByName }}</td>
+            <td>{{ asset.statusDateTime | date:'MM/dd/yyyy hh:mm:ss a' }}</td>
+
+            <td ng-class="{ 'transfer-error' :isFailedTransfer(asset) }">{{ asset.statusDescription  }} </td>
+            <td>{{ asset.updateDateTime | date:'MM/dd/yyyy hh:mm:ss a' }}</td>
+            <td>{{ asset.destinationName }}</td>
+        </tr>
+    </script>
+</div>

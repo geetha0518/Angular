@@ -1,0 +1,39 @@
+﻿<div class="row">
+    <div class="col-md-12">
+        <div>
+            <div id="assetGrid" kendo-grid="assetGrid" k-options="gridOptions" class="assetGrid" k-data-source="assetData" k-on-change="cellSelected(kendoEvent)"></div>
+        </div>
+        <video-stream ng-hide="true"></video-stream>
+    </div>
+
+    <script id="assetNameTemplate" type="text/x-kendo-tmpl">
+        <div class="asset-file-title">
+            <span class="hover fa-stack fa-lg zip-contents-icon"
+                  ng-if="dataItem.fileExtension === 'ZIP'"
+                  ng-click="openZipDialog(dataItem); $event.stopPropagation();"
+                  title="Open zip dialog for {{ dataItem.fileName }}">
+                <i class="fa fa-file-o fa-stack-2x"></i>
+                <i class="fa fa-search fa-stack-1x" style="top: 2px;"></i>
+            </span>
+            <span class="tags">
+                <span class="revision-icon" ng-show="hasRevisions(dataItem)"><i class="fa fa-bolt"></i></span>
+                <i ng-if="hasRestrictions(dataItem)" class="restricted-icon mb mb-restricted"></i>
+            </span>
+        </div>
+    </script>
+
+    <script id="assetActionsTemplate" type="text/x-kendo-tmpl">
+        <span ng-if="!isHomePage()" class="table-actions">
+            <a title="Add to Collection" ng-if="userProfile.permissions.collectionAssetAdd && userProfile.isACollectionOwner"
+               ng-click="addAssetToCollection(dataItem); $event.stopPropagation();">
+                <i class="fa fa-plus-circle fa-fw"></i>
+            </a>
+            <a ng-if="userProfile.permissions.assetDownload" ng-click="downloadClicked(dataItem)" ng-click-options="{ preventDoubleClick: true }" class="psuedo-link-effect">
+                <i class="fa fa-arrow-circle-down fa-fw"></i>
+            </a>
+            <a class="asset-play-icon psuedo-link-effect" ng-if="dataItem.hasVideoPreview && !isFicUser" ng-click="streamClicked(dataItem)">
+                <span ng-show="label" class="previewlabel">Play Preview</span><i class="fa fa-play-circle fa-fw"></i>
+            </a>
+        </span>
+    </script>
+</div>

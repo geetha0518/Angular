@@ -1,0 +1,7 @@
+﻿<li ng-if="asset.teamEvent">{{ asset.teamEvent | shorten:23:4 }}</li>
+<li ng-if="asset.promoCode">{{ asset.promoCode }}</li>
+<li ng-if="asset.sport">{{ asset.sport }}</li>
+<li ng-if="asset.tagVersion">{{ asset.tagVersion | shorten:23:4 }}</li>
+<li ng-if="asset.promoStartDate">Start: {{ asset.promoStartDate | date:'MM/dd/yyyy' }}</li>
+<li ng-if="asset.uploadedOn">Uploaded: {{ asset.uploadedOn | date:'MM/dd/yyyy' }}</li>
+<li ng-if="asset.duration">Duration: {{ asset.duration }}</li>

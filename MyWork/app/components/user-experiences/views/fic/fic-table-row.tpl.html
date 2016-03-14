@@ -1,0 +1,18 @@
+﻿<tr class="{{ conditionalClass() }} " ng-class="{ 'selected': asset.selected }" ng-click="showDetail()">
+    <td table-asset-filename asset-id="asset.assetId" file-name="asset.fileName" asset-ext="asset.fileExtension" checkbox-enabled="true"></td>
+    <td table-collections-badge></td>
+
+    <!-- Custom content. -->
+    <td>{{asset.ficShowName}}</td>
+    <td>{{asset.ficSeasonName}}</td>
+    <td><span ng-if="asset.ficEpisodeNumber">{{asset.ficEpisodeNumber}}</span> - {{asset.ficEpisodeName}}</td>
+    <td>{{asset.ficVersionName}}</td>
+    <td>{{asset.assetType}}</td>
+    <td>{{asset.ficIsoConformedLanguage}}</td>
+    <td>{{asset.ficIsoSubtitleLanguage}}</td>
+    <td>
+        <span ng-show="asset.uploadedOn">{{ asset.uploadedOn | foxDate }}</span>
+    </td>
+
+    <td table-actions></td>
+  </tr>

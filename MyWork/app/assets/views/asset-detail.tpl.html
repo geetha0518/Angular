@@ -1,0 +1,96 @@
+﻿<div class="asset-detail">
+    <div class="page-header" ng-if="previousPage && assetFound > 0">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <a ui-sref="{{previousPage.routeName}}({{previousPage.data}})" >
+                        &laquo; Go Back to {{previousPage.label}}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="action-bar" ng-if="assetFound > 0">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="pull-left bulk-general-actions">
+                        <button class="btn btn-bulk" tooltip="Add to Collection"
+                                ng-if="permissions.collectionAssetAdd && isACollectionOwner"
+                                ng-disabled="disableAddToCollection()"
+                                ng-click="addToCollection()">
+                            <i class="fa fa-plus-circle fa-fw"></i>
+                            <span class="display-action-names">Add to Collection</span>
+                        </button>
+                        <button class="btn btn-bulk" tooltip="Download"
+                                ng-disabled="disableDownload()"
+                                ng-click="openDownloadDialog()">
+                            <i class="fa fa-arrow-circle-down fa-fw"></i>
+                            <span class="display-action-names">Download</span>
+                        </button>
+
+                        <delete-asset title="Delete Asset" ng-if="!ClientUserService.isFic && permissions.assetDelete "></delete-asset>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="asset-detail container">
+    <div class="metadata-area" ng-if="assetFound > 0">
+        <div class=" col-md-4">
+        <asset-detail-thumbnail thumb-image-url="asset.model.thumbnail"
+                                zoom-image-url="asset.zoomSource.image"
+                                is-thumbnail-loading="asset.model.isLoading"
+                                is-zoom-loading="asset.zoomSource.isLoading"
+                                has-restrictions="hasRestrictions()"
+                                allow-zoom="allowImageZoom()"
+                                zoom-style="'right'">
+        </asset-detail-thumbnail>
+        <div>
+            <video-stream asset="asset.searchedAsset" label="true" ng-disabled="disableDownload()" class="pull-left" ng-click="$event.stopPropagation()"></video-stream>
+        </div>
+        <loading isloading="asset.model.isLoading">
+            <h4 ng-if="asset.model.assetName">Asset Name</h4>
+            <div class="value" ng-if="asset.model.assetName">{{ asset.model.assetName }}</div>
+
+            <h4 ng-if="asset.model.fileSize">File Size</h4>
+            <div class="value" ng-if="asset.model.fileSize">{{ asset.model.fileSize | filesize:2 }}</div>
+
+            <h4 ng-if="asset.model.dateUploaded">Date Uploaded</h4>
+            <div class="value" ng-if="asset.model.dateUploaded">{{ asset.model.dateUploaded | date:'MM/dd/yyyy' }}</div>
+        </loading>
+
+        <h4>Collections</h4>
+        <loading isloading="asset.collections.isLoading">
+            <div ng-if="!asset.collections.hasCollections">
+                None
+            </div>
+            <div ng-if="asset.collections.hasCollections" ng-repeat="collection in asset.collections.collections | orderBy: 'title'">
+                <collection-link collection="collection"></collection-link>
+            </div>
+        </loading>
+    </div>
+        <div class="col-md-8">
+            <loading isloading="asset.metadata.isLoading">
+                <div ng-if="!asset.metadata.hasMetadata">
+                    <h4>Asset Information</h4>
+                    <div>None</div>
+                </div>
+                <div ng-if="asset.metadata.hasMetadata" ng-repeat="section in asset.metadata.sections">
+                    <metadata-details ng-if="section.sectionTitle !== 'Audio Details'" details="section"></metadata-details>
+
+                    <div ng-if="section.sectionTitle === 'Audio Details' && section.fields.length > 0">
+                        <audio-details-table cells="section.fields"></audio-details-table>
+                    </div>
+                </div>
+            </loading>
+        </div>
+    </div>
+
+    <div class="user-collections" ng-show="assetFound === 0">
+        <div class="empty-search-results">
+           Sorry, the asset you are trying to reach is not currently available. If you think this is a mistake <br /> please contact <a ui-sref="help"> support </a>.
+        </div>
+    </div>
+</div>

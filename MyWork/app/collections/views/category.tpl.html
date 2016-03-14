@@ -1,0 +1,16 @@
+﻿<div>
+    <div class="modal-header">
+        <h3 class="modal-title">Group By</h3>
+    </div>
+
+    <div class="modal-body">        
+        <select ng-model="selectedMetadataField" ng-options="o as o for o in metadataFields">
+            <option value="">Select Metadata Field</option>
+        </select>        
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-warning" ng-click="closeCreateCategoryDialog()">Cancel</button>
+        <button class="btn btn-success" ng-click="closeCreateCategoryDialog()">Group</button>
+    </div>
+</div>

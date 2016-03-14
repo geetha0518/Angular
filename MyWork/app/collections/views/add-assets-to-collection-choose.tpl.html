@@ -1,0 +1,46 @@
+﻿<div class="choose-assets-for-collection">
+    <h4>Add Assets</h4>
+    <p>
+        Select the collection(s) you'd like to add assets to. Use the collection
+        filter menu to quickly find the collections you're looking for.
+    </p>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h5>Assets Selected ({{request.assets.length}})</h5>
+            <div class="assets well">
+                <ul>
+                    <li ng-repeat="asset in request.assets | orderBy :'assetName'">
+                        <i class="fa fa-times remove hover pull-right" ng-if="request.assets.length > 1"
+                           ng-click="removeAsset(asset)"></i>
+
+                        <a href="#" title="{{hoverTitle(asset)}}">
+                            {{asset.assetName | shorten:50:10}}
+
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h5>Available Collections ({{availableCollectionsCount()}})</h5>
+
+            <input ng-model="filterText" placeholder="Enter a keyword to filter" />
+
+            <div class="collections well">
+                <div ng-if="loadingCollections">
+                    loading...
+                </div>
+                <ul ng-if="!loadingCollections">
+                    <li ng-repeat="collection in (request.collections | filter:titleContainsFilterText) | orderBy:'title'">
+                        <moby-checkbox selected="collection.selected"></moby-checkbox>
+                        {{collection.title}} <i class="glyphicon glyphicon-circle-arrow-right glyphicon-push collection_adEnabled" ng-show="collection.isAutodownloaderEnabled" tooltip="Auto-Push Enabled"></i>
+                    </li>
+                </ul>
+            </div>
+            <div ng-show="selectedAutoDLCollections() > 0">
+                You've selected collections that auto transfer assets directly to recipients.
+            </div>
+        </div>
+    </div>
+</div>

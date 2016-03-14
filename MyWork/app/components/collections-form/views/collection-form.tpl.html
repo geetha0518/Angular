@@ -1,0 +1,79 @@
+﻿<div>
+    <div id="download-dialog-header" class="modal-header">
+        <i class="fa fa-times-circle fa-2x pull-right hover" ng-click="closeModal()"></i>
+        <h3 class="modal-title">Add Collection</h3>
+    </div>
+    <div id="add-collection" class="modal-body">
+        <form name="collectionForm">
+            <div class="row">
+                <div class="col-md-12  ">
+                    <div class="form-group">
+                        <label>Collection Name:</label>
+                        <input type="text" name="collectionNameField" placeholder="Type a collection name"
+                               ng-model="collectionName"
+                               ng-change="checkCollectionName()"
+                               ng-maxlength="{{maxNameLength}}"
+                               ng-pattern="/^[\w -]*$/"
+                               class="form-control"
+                               required>
+                        <span class="transfer-error" ng-show="!collectionForm.collectionNameField.$valid && collectionForm.collectionNameField.$error.maxlength ">Invalid length field. Maximum lenth is {{maxNameLength}} characters  </span>
+                        <span class="transfer-error" ng-show="!collectionForm.collectionNameField.$valid && collectionForm.collectionNameField.$error.pattern ">Invalid characters in  field.   </span>
+                        
+                        <span class="transfer-error" ng-show="!isCollectionTitleUnique">Collection title already exists. Collection title must be unique.  </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12  ">
+                    <div class="form-group">
+                        <label>Collection Description:</label>
+                        <textarea name="collectionDescriptionField"
+                                  ng-model="collectionDescription"
+                                  ng-maxlength="{{maxDescriptionLength}}"
+                                  ng-pattern="/^[\w -,.]*$/"
+                                  class="form-control"></textarea>
+
+                        <span class="transfer-error" ng-show="!collectionForm.collectionDescriptionField.$valid && collectionForm.collectionDescriptionField.$error.maxlength ">Invalid length field. Maximum length is {{maxDescriptionLength}}   </span>
+                        <span class="transfer-error" ng-show="!collectionForm.collectionDescriptionField.$valid && collectionForm.collectionDescriptionField.$error.pattern ">Invalid characters in  field.   </span>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Add Security Policy:</label>
+
+                        <input type="text"
+                               ng-model="selectedPolicy"
+                               ng-change="checkSecurityPolicy()"
+                               typeahead-on-select='onPolicySelected($item, $model, $label)'
+                               typeahead="policy as policy.policyName for policy in securityPolicies| filter:{policyName:$viewValue}"
+                               class="form-control">
+                        <span ng-show="selectedPolicy.policyId">
+                            <i class="glyphicon glyphicon-ok-circle"></i> Selected policy Id:{{selectedPolicy.policyId}}
+                        </span>
+                        <span ng-show="!resultFound">
+                            <i class="glyphicon glyphicon-ban-circle"></i> No Results Found
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <span class="transfer-error" ng-show="hasError"> {{errorMessage}}</span>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-warning" ng-click="closeModal()" ng-disabled="processing">
+            Cancel
+        </button>
+        <button class="btn btn-success" ng-click="createCollection()" ng-disabled="!(resultFound && collectionForm.collectionDescriptionField.$valid && collectionForm.collectionNameField.$valid && isCollectionTitleUnique && !processing)">
+            {{addButtonMessage}}
+        </button>
+    </div>
+   
+</div>

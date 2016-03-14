@@ -1,0 +1,10 @@
+﻿<li ng-if="asset.teamEvent">{{ asset.teamEvent}}</li>
+<li ng-if="asset.promoCode">{{ asset.promoCode }}</li>
+<li ng-if="asset.fileSize">File Size: {{ asset.fileSize | filesize:2 }}</li>
+<li ng-if="asset.sport">{{asset.sport | foxSportsLabel}}</li>
+<li ng-if="asset.tagVersion">{{asset.tagVersion}}</li>
+<li ng-if="asset.promoDuration">Duration: {{asset.promoDuration}}</li>
+<li ng-if="asset.promoStartDate">Start: {{asset.promoStartDate | date:'MM/dd/yyyy'}}</li>
+<li ng-if="asset.eventDate">Event: {{asset.eventDate |  date:'MM/dd/yyyy'}}</li>
+<li ng-if="asset.uploadedOn">Uploaded: {{ asset.uploadedOn | date:'MM/dd/yyyy' }}</li>
+<li ng-if="asset.expiryDate">Expires: {{asset.expiryDate |  date:'MM/dd/yyyy'}}</li>

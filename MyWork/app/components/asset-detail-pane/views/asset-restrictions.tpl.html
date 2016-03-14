@@ -1,0 +1,29 @@
+﻿<div id="restrict-asset" ng-show="asset.isRestricted">
+    <i class="glyphicon glyphicon-warning-sign"></i> Restricted
+</div>
+
+<div class="restrictions well" ng-if="hasRestrictions()">
+    <div class="restricted-section">
+        <i class="glyphicon glyphicon-warning-sign"></i>
+        <span>Restricted</span>
+    </div>
+    <div class="scrollable-detail">
+        <span ng-if="showShortRestriction">
+        {{asset.usageRestrictions | shorten:150}}
+        </span>
+        <span ng-if="!showShortRestriction">
+        {{asset.usageRestrictions}}
+        </span>
+    </div>
+
+    <div class="toggle-restriction-text">
+        <a class="btn" ng-if="asset.usageRestrictions.length > 150" ng-click="toggleRestrictionText()">
+            <span ng-if="showShortRestriction">
+                Show More
+            </span>
+            <span ng-if="!showShortRestriction">
+                Show Less
+            </span>
+        </a>
+    </div>
+</div>

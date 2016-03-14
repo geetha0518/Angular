@@ -1,0 +1,77 @@
+﻿﻿<div class="add-to-collection">
+    <div ng if="!submitted && !hasError()" ng-hide="Success">
+        <div style=" padding-left:15px;padding-right:15px;>
+            <i class=" fa fa-times-circle fa-2x pull-right hover" ng-click="closeModal()">
+            </i>
+            <h3 class="modal-title" style="font-size:20px;">Are you sure you want to remove  assets from collection?</h3>
+            <div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h5>Assets Selected ({{request.assets.length}})</h5>
+                        <div class="assets well">
+                            <ul>
+                                <li style="font-size:15px;">
+                                    <b>
+                                        Note: Removing assets from a collection does Not Delete assets from the website. If you have permissions, use the Delete button to do this.
+                                    </b>
+                                </li>
+                                <br>
+                                <li ng-repeat="asset in request.assets | orderBy :'assetName'">
+
+                                    {{asset.assetName | shorten:50:10}}
+
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bulk-add-response" ng-show="Success" style="margin-left:20px;">
+        <div  style="font-size:20px; padding-left:15px;padding-right:15px;border-bottom: 1px solid #e5e5e5;">
+
+
+            <h3 class="modal-title text-left" ng-if="request.assets.length >0">Removed  </h3>
+        </div>
+        <h4 style="margin-top:20px;"><b>Success!</b></h4><br>
+
+        <ul>
+            <li ng-repeat="asset in request.assets | orderBy :'assetName'">
+                {{asset.fileName  | shorten:50:10}}
+            </li>
+        </ul><br>
+        <p>
+            <i class="fa fa-check-circle fa-2x success-color"></i>
+            <span>{{addedAssetCount}} {{'Asset' | pluralize:addedAssetCount}} removed</span>
+        </p>
+    </div>
+
+    <div class="well" ng-if="hasError()" style="color:red;">
+        <i class="fa fa-warning fa-2x warning-color"></i> <b> "You dont have rights to remove asset. Delete Unsuccessful"</b>
+    </div>
+
+    <div class="modal-footer">
+        <button class=" btn btn-primary" ng-hide="!hidebutton" ng-class="{'btn-success': started, 'btn-primary': !started}"
+                ng-click="remove()">
+            <i class="glyphicon glyphicon-trash glyphicon-fw"></i>
+            {{buttontext}}
+        </button>
+
+        <button class=" btn btn-primary btn-success" ng-click="closepopup()" ng-show="removeSuccess">
+            <i class="glyphicon glyphicon-remove glyphicon-fw"></i>
+            Close
+        </button>
+        <button class="btn btn-default" ng-hide="!hideDeleteCancelButton"
+                ng-click="closeModal()" style="float:left;width:40px;">
+            No
+        </button>
+    </div>
+</div>
+
+
+
+
+
+

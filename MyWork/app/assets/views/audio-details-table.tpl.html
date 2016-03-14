@@ -1,0 +1,18 @@
+﻿<div ng-if="tableHasData">
+    <h4 class="metadata-name">Audio Details</h4>
+
+    <table class="audio-details">
+        <thead>
+            <tr>
+                <th ng-repeat="header in tableHeaders">{{header}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="stripe" ng-repeat="row in tableRows" ng-class-odd="'odd'">
+                <td ng-repeat="column in row track by $index">{{column}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr />
+</div>

@@ -1,0 +1,16 @@
+﻿<td align="center" class="table-actions text-nowrap">
+    <span ng-if="!isHomePage()">
+        <a title="Share" ng-show="false && clientUser.permissions.assetDownload">
+            <i class="fa fa-envelope fa-fw"></i>
+        </a>
+        <a title="Add to Collection"
+           ng-if="permissions.collectionAssetAdd && isACollectionOwner"
+           ng-click="showAddAssetsToCollectionDialog(); $event.stopPropagation();">
+            <i class="fa fa-plus-circle fa-fw"></i>
+        </a>
+        <download-asset title="Download Asset" ng-if="clientUser.permissions.assetDownload"
+                        ng-click="$event.stopPropagation();">
+        </download-asset>
+        <video-stream asset="asset" ng-click="$event.stopPropagation();" title="View Video"></video-stream>
+    </span>
+</td>

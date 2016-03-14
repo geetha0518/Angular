@@ -1,0 +1,171 @@
+﻿<div class="collection-details">
+    <div class="row">
+        <div class="col-md-12">
+            <loading isloading="loadingAssets">
+
+            </loading>
+        </div>
+    </div>
+    <div ng-if="!loadingAssets">
+        <div class="row">
+            <div class="page-header col-md-12">
+                <div>
+                    <div class="pull-right header-edit-collection-btn">
+                        <a href="#" class="pull-right btn btn-default" ng-click="openEditCollection()">
+                            <i class="glyphicon glyphicon-pencil fa-fw"></i>Edit Collection
+                        </a>
+                    </div>
+                    <h5>
+                        {{collection.createDate | date : 'M/d/yy'}} <span class="label label-success label-align">Active</span>
+                        <span ng-if="collection.isAutodownloaderEnabled" class="glyphicon glyphicon-circle-arrow-right glyphicon-push" aria-hidden="true"></span>
+                    </h5>
+                    <h3>
+                        <a href="" class="detail" ng-click="toggleFavorite(dataItem)" ng-if="">
+                            <i class="glyphicon" ng-class="{'glyphicon-star-empty': !collection.isFavorite, 'glyphicon-star': collection.isFavorite}"></i>
+                        </a>
+                        {{collection.name}}
+                    </h3>
+                    <p class="collection-header-owners-list"><i class="glyphicon glyphicon-user glyphicon-fw"></i> {{collection.owners}}</p>
+                    <p>
+                        {{collection.description}}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <nav class="navbar navbar-default navbar-secondary navbar-fixed-inline" role="navigation">
+            <div>
+                <nav class="navbar-collapse collapse" ng-class="{'in':!navCollapsed}">
+                    <ul class="nav navbar-nav">
+                        <li class="active">
+                            <a ng-href="/collection/{{collectionId}}/assets/">Assets</a>
+                        </li>
+                        <li>
+                            <a ng-href="/collection/{{collectionId}}/members/">Members</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </nav>
+
+        <asset-stage assets="assets">
+            <div id="sticky-action-bar" sticky offset="76">
+                <action-bar id="collection-action-bar" ng-show="assets.length > 0">
+                    <div class="col-md-12">
+                        <div class="pull-left bulk-general-actions">
+                            <bulk-action icon="fa fa-plus-circle fa-fw" label="Group Assets" tooltip="Group selected items"
+                                         ng-if="collection.isOwner"
+                                         ng-click="openCreateCategoryDialog()"></bulk-action>
+                            <bulk-action icon="fa fa-minus-circle fa-fw" label="Remove Assets" tooltip="Remove selected items"
+                                         ng-if="permissions.collectionAssetRemove && isACollectionOwner"
+                                         enabled="getSelectedAssets().length > 0"
+                                         ng-click="removeAssetsFromCollection()"></bulk-action>
+                            <bulk-action icon="fa fa-plus-circle fa-fw" label="Add to Collection" assets="assets" type="addCollection" tooltip="Add selected to a Collection"
+                                         ng-if="permissions.collectionAssetAdd && isACollectionOwner"
+                                         enabled="getSelectedAssets().length > 0"></bulk-action>
+                            <bulk-action icon="fa fa-file-pdf-o fa-fw" label="PDF" assets="assets" type="viewPdf" tooltip="Create PDF from selected"
+                                         ng-if="!isFic"
+                                         enabled="getSelectedAssets().length > 0"></bulk-action>
+                            <bulk-action icon="fa fa-envelope fa-fw" label="Share" tooltip="Share selected items"
+                                         enabled="clientUser.permissions.assetDownload && collection.membersCanDownload && getSelectedAssets().length > 0"></bulk-action>
+                            <bulk-action icon="fa fa-arrow-circle-down fa-fw" label="Download" tooltip="Download selected items"
+                                         ng-if="clientUser.permissions.assetDownload"
+                                         enabled="clientUser.permissions.assetDownload && collection.membersCanDownload && getSelectedAssets().length > 0"
+                                         ng-click="openDownloadDialog()"></bulk-action>
+                            <bulk-action icon="fa fa-trash fa-fw" label="Delete" tooltip="Delete Asset"
+                                         ng-if="clientUser.permissions.collectionassetDelete && collections.filterdDetails"
+                                         enabled="clientUser.permissions.assetDelete && collection.membersCanDelete "
+                                         ng-click="openDeleteDialog()"></bulk-action>
+                        </div>
+                        <div class="pull-right">
+                            <div class="btn-group select-state-picker">
+                                <button type="button" class="btn btn-bulk" ng-disabled="disabled" tooltip="Select all" ng-click="selectAll()">
+                                    <i class="fa fa-check fa-fw"></i>
+                                </button>
+                                <button type="button" class="btn btn-bulk" ng-disabled="disabled" tooltip="Clear all" ng-click="deselectAll()">
+                                    <i class="fa fa-square-o fa-fw"></i>
+                                </button>
+                            </div>
+                            <bulk-action icon="fa fa-file-pdf-o fa-fw" label="Create PDF" tooltip="Create PDF from selected" ng-if="false"></bulk-action>
+
+                            <sort-options ng-show="showSort"></sort-options>
+                            <view-tab icon="fa fa-th-large fa-fw" tooltip="Gallery View" linkto="asset-tile-view"></view-tab>
+                            <view-tab icon="fa fa-align-justify fa-fw" tooltip="List View" linkto="asset-grid-view"></view-tab>
+                        </div>
+                    </div>
+                </action-bar>
+            </div>
+            <div id="collections-center" ng-cloak>
+                <div ng-if="totalResults === 0">
+                    <div class="empty-search-results">
+                        No Assets within Collection
+                    </div>
+                </div>
+
+                <div ng-if="totalResults > 0">
+                    <div class="collections-exp-coll" style="padding: 1em 0;">
+                        <span class="expand-group-collections" ng-if="collection.isCollectionAssetsGrouped">
+                            <a href="#" ng-if="!expandAll" ng-click="toggleExpand()">
+                                Expand All <span class="ng-scope fa fa-chevron-circle-right fa-fw">
+                                </span>
+                            </a>
+                            <a href="#" ng-if="expandAll" ng-click="toggleExpand()">
+                                Collapse All <span class="ng-scope fa fa-chevron-circle-down fa-fw"></span>
+                            </a>
+                        </span>
+                        <span>
+                            <i ng-show="showSpinner" class="results-loading-count fa fa-spinner fa-lg fa-fw fa-spin info-color"></i>&nbsp;{{assetCountLabel}} {{totalResults}} {{'Results' | pluralize:totalResults}}&nbsp;
+                        </span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <view-panel linkto="asset-tile-view">
+                                <!-- Only group assets for the collection that are set to do so -->
+                                <accordion close-others="false" id="results-grid" ng-if="collection.isCollectionAssetsGrouped">
+                                    <accordion-group ng-repeat="group in groupedAssets track by group.groupId" ng-controller="accordionIsolate" is-open="group.isOpen">
+                                        <accordion-heading>
+                                            <div>
+                                                <span class="collection-group-name">
+                                                    <span>{{group.groupName}}</span>
+                                                    <span ng-class="{'fa fa-chevron-circle-down fa-fw': group.isOpen, 'fa fa-chevron-circle-right fa-fw': !group.isOpen}"></span>
+                                                    <span class="pull-right">{{group.assets.length}} assets </span>
+                                                </span>
+                                            </div>
+                                        </accordion-heading>
+                                        <asset-card-tile ng-repeat="asset in group.assets track by asset.assetId" asset="asset"></asset-card-tile>
+                                    </accordion-group>
+                                </accordion>
+
+                                <!-- Do not group assets for the collection that are set not to do so -->
+                                <div ng-if="!collection.isCollectionAssetsGrouped" class="text-justify">
+                                    <asset-card-tile ng-repeat="asset in assets track by asset.assetId" asset="asset"></asset-card-tile>
+                                </div>
+                            </view-panel>
+
+                            <view-panel linkto="asset-grid-view">
+                                <asset-card-table assets="assets" grid-height="420" is-grouped="collection.isCollectionAssetsGrouped" expand-all="expandAll"></asset-card-table>
+                            </view-panel>
+                        </div>
+                    </div>
+
+
+                    <div class="collections-exp-coll">
+                        <span class="expand-group-collections" ng-if="collection.isCollectionAssetsGrouped">
+                            <a href="#" ng-if="!expandAll" ng-click="toggleExpand()">
+                                Expand All <span class="ng-scope fa fa-chevron-circle-right fa-fw"></span>
+                            </a>
+                            <a href="#" ng-if="expandAll" ng-click="toggleExpand()">
+                                Collapse All <span class="ng-scope fa fa-chevron-circle-up fa-fw"></span>
+                            </a>
+                        </span>
+                        <span>
+                            <i ng-show="showSpinner" class="results-loading-count fa fa-spinner fa-lg fa-fw fa-spin info-color"></i>&nbsp;{{assetCountLabel}} {{totalResults}} {{'Results' | pluralize:totalResults}}&nbsp;
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+        </asset-stage>
+    </div>
+</div>

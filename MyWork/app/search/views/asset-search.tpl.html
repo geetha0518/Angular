@@ -1,0 +1,94 @@
+﻿<div class="asset-search">
+    <div class="row" ng-if="loadingSearchResults">
+        <div class="col-xs-12">
+            <loading isloading="loadingSearchResults">
+            </loading>
+        </div>
+    </div>
+    <asset-stage ng-show="!loadingSearchResults" assets="assets">
+        <action-bar id="fixed-action-bar" ng-show="assets.length > 0">
+            <div class="col-md-12">
+                <div class="pull-left bulk-general-actions">
+                    <bulk-action icon="fa fa-plus-circle fa-fw" label="Add to Collection" assets="assets" type="addCollection" tooltip="Add selected to a Collection"
+                                 ng-if="permissions.collectionAssetAdd && isACollectionOwner"
+                                 enabled="getSelectedAssets().length > 0"></bulk-action>
+                    <bulk-action icon="fa fa-file-pdf-o fa-fw" label="PDF" assets="assets" type="viewPdf" tooltip="Create PDF from selected"
+                                 ng-if="!isFic"
+                                 enabled="getSelectedAssets().length > 0"></bulk-action>
+                    <bulk-action icon="fa fa-envelope fa-fw" label="Share" tooltip="Share selected items"
+                                 ng-if="permissions.assetDownload && enableDownloads"></bulk-action>
+                    <bulk-action icon="fa fa-arrow-circle-down fa-fw" label="Download" tooltip="Download selected items"
+                                 ng-if="permissions.assetDownload"
+                                 enabled="getSelectedAssets().length > 0"
+                                 ng-click="openDownloadDialog()"></bulk-action>
+                </div>
+                <div class="pull-right">
+                    <div class="btn-group select-state-picker">
+                        <button type="button" class="btn btn-bulk" ng-disabled="disabled" tooltip="Select all" ng-click="selectAll()">
+                            <i class="fa fa-check fa-fw"></i>
+                        </button>
+                        <button type="button" class="btn btn-bulk" ng-disabled="disabled" tooltip="Clear all" ng-click="deselectAll()">
+                            <i class="fa fa-square-o fa-fw"></i>
+                        </button>
+                    </div>
+                    <sort-options ng-show="showSort"></sort-options>
+                    <view-tab icon="fa fa-th-large fa-fw" tooltip="Gallery View" linkto="asset-tile-view"></view-tab>
+                    <view-tab icon="fa fa-align-justify fa-fw" tooltip="List View" linkto="asset-grid-view"></view-tab>
+                </div>
+            </div>
+        </action-bar>
+        <div class="results" ng-show="!loadingSearchResults" ng-cloak>
+            <div class="row" ng-if="totalResults === 0">
+                <div class="empty-search-results">
+                    No Search Results
+                </div>
+            </div>
+            <div ng-if="totalResults > 0">
+                <div class="row" ng-if="totalResults > 0">
+                    <div class="col-md-12 width94">
+                        <ul class="pagination pull-left">
+                            <li>{{totalResults}} {{'Results' | pluralize:totalResults}}</li>
+                        </ul>
+                        <div class="pull-right">
+                            <pagination previous-text="«"
+                                        next-text="»"
+                                        total-items="totalResults"
+                                        ng-model="paginationModel.currentPage"
+                                        max-size="5"
+                                        class="pagination"
+                                        items-per-page="pageLimit"
+                                        ng-change="pageUpdate(paginationModel.currentPage)"></pagination>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="col-md-12">
+                        <view-panel linkto="asset-tile-view">
+                            <asset-card-tile ng-repeat="asset in assets" asset="asset"></asset-card-tile>
+                        </view-panel>
+                        <view-panel linkto="asset-grid-view">
+                            <asset-card-table assets="assets" grid-height="520" filterable="false" sortable="false"></asset-card-table>
+                        </view-panel>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 width94">
+                        <ul class="pagination pull-left">
+                            <li>{{totalResults}} {{'Results' | pluralize:totalResults}}</li>
+                        </ul>
+                        <div class="pull-right">
+                            <pagination previous-text="«"
+                                        next-text="»"
+                                        total-items="totalResults"
+                                        ng-model="paginationModel.currentPage"
+                                        max-size="5"
+                                        class="pagination"
+                                        items-per-page="pageLimit"
+                                        ng-change="pageUpdate(paginationModel.currentPage)"></pagination>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </asset-stage>
+</div>

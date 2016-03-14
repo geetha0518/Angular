@@ -1,0 +1,8 @@
+﻿<li ng-if="asset.ficShowName">{{asset.ficShowName}}</li>
+<li ng-if="asset.ficSeasonName">{{asset.ficSeasonName}}</li>
+<li ng-if="asset.ficEpisodeName"><span ng-if="asset.ficEpisodeNumber">{{asset.ficEpisodeNumber}} - </span>{{asset.ficEpisodeName}}</li>
+<li ng-if="asset.ficVersionName">{{asset.ficVersionName}}</li>
+<li ng-if="asset.subAssetType">{{asset.subAssetType}}</li>
+<li ng-if="asset.ficIsoConformedLanguage">{{asset.ficIsoConformedLanguage}}</li>
+<li ng-if="asset.ficIsoSubtitleLanguage">{{asset.ficIsoSubtitleLanguage}}</li>
+<li ng-if="asset.uploadedOn">Uploaded: {{ asset.uploadedOn | date:'MM/dd/yyyy' }}</li>

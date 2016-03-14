@@ -1,0 +1,24 @@
+﻿<div class="search-bar">
+    <div class="flex-search-box">
+        <div class="flex-tags">
+            <span class="tag" ng-repeat="tag in tags track by $index">
+                {{tag.displayTerm}}
+                <span ng-click="remove($index)">&times;</span>
+            </span>
+        </div>
+        <div class="search-bar-mod">
+            <form type="submit" ng-submit="handleSubmit()">
+                <input placeholder="{{ placeHolderText }}" size="14" ng-model="inputText" ng-class="tags.length > 0 ? 'hide-placeholder' : ''" />
+                <span class="search-loading" spinner="{lines: 7, length: 4, width: 2, radius: 3}" spinner-active="isLoading"></span>
+
+                <div class="search-add-btn">
+                    <button class="btn btn-primary" type="submit" ng-click="handleSubmit()">
+                        <i ng-if="usePlusButton" class="glyphicon glyphicon-plus"></i>
+                        <i ng-if="hasButton" class="glyphicon glyphicon-search"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+        <search-bar-popup prompts="prompts" add-suggestion="addSuggestion" search-bar-name="name"></search-bar-popup>
+    </div>
+</div>

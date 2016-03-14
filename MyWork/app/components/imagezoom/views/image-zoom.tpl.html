@@ -1,0 +1,20 @@
+﻿<div class="image-zoom" ng-style="{
+     'left': left + 'px',
+     'top': top + 'px',
+     'width': width + 'px',
+     'height': height + 'px',
+     'background-color': backgroundColor,
+     'display': display
+    }"
+>
+    <div class="image-zoom-lens" ng-style="{
+        'left': lenseLeft + 'px', 
+        'top': lenseTop + 'px',
+        'width': lenseWidth + 'px',
+        'height': lenseHeight + 'px',
+        'background-image': 'url(' + imageUrl + ')'
+       }"
+     ></div>
+    <div class="shadow"></div>
+    <span class="loading" spinner="{lines: 7, length: 5, width: 3, radius: 5}" spinner-active="isLoading"></span>
+</div>

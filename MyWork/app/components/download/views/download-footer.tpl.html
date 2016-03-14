@@ -1,0 +1,41 @@
+﻿<div class="download-footer fixed-footer">
+    <div class="minimized-transfer-status">
+        <div ng-if="!downloadComplete">
+            <div class="col-md-3 text-left">
+                <span ng-show="!downloadComplete">  {{transfersCompleted}}/{{transfersInProgress}} - {{overallTimeRemaining | timestamp}} remaining </span>
+            </div>
+            <div class="col-md-6" ng-if="!downloadComplete">
+                <progressbar class="progress-striped" animate="true" value="overallProgress" type="success" ng-show="!downloadComplete">
+                    <b>{{overallProgress | number:2 }}%</b>
+                </progressbar>
+            </div>
+
+            <div class="col-md-3" ng-if="overallTimeRemaining > 0">
+                <div class="pull-right">
+                    <button ng-click="reopenDialog()" class="btn btn-primary" title="Maximize">
+                        <i class="glyphicon glyphicon-resize-full glyphicon-fw"></i>
+                    </button>
+                </div>
+                <div>
+                    {{ overallBytes_written  | filesize:2 }} / {{ overallBytes_expected  | filesize:2 }}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 text-center" ng-if="downloadComplete">
+            <div class="pull-right">
+                <button ng-click="closeFooter()" ng-show="showCloseButton" class="btn btn-primary">
+                    <i class="glyphicon glyphicon-remove glyphicon-fw"></i>Close
+                </button>
+
+                <button ng-click="reopenDialog()" class="btn btn-primary" title="Maximize">
+                    <i class="glyphicon glyphicon-resize-full glyphicon-fw"></i>
+                </button>
+            </div>
+
+            <div class="completed-message">
+                <p>Download Finished</p>
+            </div>
+        </div>
+    </div>
+</div>

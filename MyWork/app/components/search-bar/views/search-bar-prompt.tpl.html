@@ -1,0 +1,12 @@
+﻿<div class="suggestion">
+    <div>{{prompt.displayField | pluralize:prompt.totalResults}}:</div>
+    <ul>
+        <li ng-repeat="suggestion in getSuggestions(prompt.suggestions)" ng-class="{active: isActive(suggestion) }">
+            <search-bar-suggestion suggestion="suggestion"></search-bar-suggestion>
+        </li>
+    </ul>
+    <div class="view-all" ng-if="prompt.suggestions.length > 3" ng-click="openSuggestionsDialog(prompt)">
+        All {{prompt.displayField}} Suggestions &raquo;
+        <span class="badge pull-right">{{prompt.suggestions.length}}</span>
+    </div>
+</div>

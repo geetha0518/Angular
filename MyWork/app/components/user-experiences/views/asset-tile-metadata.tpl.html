@@ -1,0 +1,30 @@
+﻿<ul class="metadata">
+    <li class="title">
+        <a ng-if="!permissions.assetViewMetadata">
+            {{ asset.fileName | shorten:16:4}}
+        </a>
+
+        <a ng-if="permissions.assetViewMetadata"
+           ng-click="viewAssetDetails(asset.assetId)"
+           tooltip-speed="fast" tooltip="{{asset.fileName}}">
+            {{ asset.fileName | shorten:16:4}}
+        </a>
+
+        <span class="hover fa-stack fa-lg pull-right zip-contents-icon"
+              ng-if="asset.fileExtension === 'ZIP'"
+              ng-click="openZipDialog(asset); $event.stopPropagation();"
+              title="Open zip dialog for {{asset.fileName}}">
+            <i class="fa fa-file-o fa-stack-2x"></i>
+            <i class="fa fa-search fa-stack-1x" style="top: 2px;"></i>
+        </span>
+
+    </li>
+    <li>
+        <file-icon asset="asset"></file-icon>
+        {{ asset.assetType }}
+    </li>
+
+    <fmc-metadata ng-if="ClientUserService.isFmc"></fmc-metadata>
+    <fic-metadata ng-if="ClientUserService.isFic"></fic-metadata>
+    <fox-sports-metadata ng-if="ClientUserService.isFoxSports"></fox-sports-metadata>
+</ul>

@@ -1,0 +1,71 @@
+﻿<div class="user-collections">
+    <div class="row">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <h4 class=" pull-left">I Own</h4>
+                        <div class="center-vertically pull-right align-right">
+                            <button class="btn btn-primary" ng-click="notifyCollectionOwners()" ng-disabled="notifyButtonDisabled()"
+                                    title="This notifies user to check their collections"
+                                    ng-if="clientUser.isFicTrafficer">
+                                <i class="glyphicon glyphicon-envelope glyphicon-fw"></i> Notify
+                            </button>
+                            <button class="btn btn-primary" ng-click="createCollection()"
+                                    ng-if="clientUser.permissions.collectionEdit">
+                                <i class="glyphicon glyphicon-plus-sign glyphicon-fw"></i> Add Collection
+                            </button>
+                        </div>
+                        
+                    </div>
+                </div>
+                <loading isloading="loadingCollections">
+                    <div class="empty-search-results" ng-if="!grids.myCollections.options.dataSource.data().length">
+                        You do not belong to any collections.
+                    </div>
+
+                    <div ng-if="grids.myCollections.options.dataSource.data().length"
+                         kendo-grid 
+                         k-options="grids.myCollections.options"></div>
+                </loading>
+            </div>
+        </div>
+        <div class="row tuck-under">
+            <div class="col-md-10 col-md-offset-1">
+                <h4 class="indent">I am a Member Of</h4>
+                <loading isloading="loadingCollections">
+                    <div class="empty-search-results" ng-if="!grids.belongToCollections.options.dataSource.data().length">
+                        You do not belong to any collections.
+                    </div>
+
+                    <div ng-if="grids.belongToCollections.options.dataSource.data().length"
+                         kendo-grid k-options="grids.belongToCollections.options"></div>
+                </loading>
+            </div>
+        </div>
+    </div>
+    <!-- Row Template -->
+    <script id="rowTemplate" type="text/x-kendo-template">
+        <tr>
+
+            <td ng-if="clientUser.isFicTrafficer">
+                <span>
+                    <i class='mb' ng-class="{'mb-checkbox-white': !(dataItem.selected), 'mb-checkbox-green' : (dataItem.selected) }" ng-click='rowSelect(dataItem)'></i>
+                </span>
+            </td>
+            <td>
+                <a ui-sref="collection-assets({id:{{dataItem.collectionId}}}) " class="detail">{{dataItem.name}}</a>
+            </td>
+            <td>{{dataItem.owner}}</td>
+            <td>{{dataItem.memberCount}}</td>
+            <td>{{dataItem.assetCount}}</td>
+            <td>
+                <a class="btn btn-primary-rev" title="Leave" ng-if="dataItem.permissions.leave" ng-click="leave(dataItem)"><i class="glyphicon glyphicon-envelope"></i>Leave</a>
+                <a class="btn btn-primary-rev" title="Archive" ng-if="dataItem.permissions.archive" ng-click="archive(dataItem)"><i class="glyphicon glyphicon-file"></i>Archive</a>
+                <a class="btn btn-primary-rev" title="Delete" ng-if="dataItem.permissions.destroy" ng-click="destroy(dataItem)"><i class="glyphicon glyphicon-download-alt"></i>Delete</a>
+            </td>
+        </tr>
+    </script>
+</div>

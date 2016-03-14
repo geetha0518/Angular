@@ -1,0 +1,72 @@
+﻿<loading isloading="loadingMembers">
+    <div class="row">
+        <div class="page-header col-md-12">
+            <div>
+                <div class="pull-right header-edit-collection-btn">
+                    <a href="#" class="pull-right btn btn-default" ng-click="openEditCollection()">
+                        <i class="glyphicon glyphicon-pencil fa-fw"></i>Edit Collection
+                    </a>
+                </div>
+                <h5>
+                    {{collection.createDate | date : 'M/d/yy'}} <span class="label label-success">Active</span>
+                </h5>
+                <h3>
+                    <a href="" class="detail" ng-click="toggleFavorite(dataItem)" ng-if="">
+                        <i class="glyphicon" ng-class="{'glyphicon-star-empty': !collection.isFavorite, 'glyphicon-star': collection.isFavorite}"></i>
+                    </a>
+                    {{collection.name}}
+                </h3>
+                <p class="collection-header-owners-list"><i class="glyphicon glyphicon-user glyphicon-fw"></i> {{collection.owners}}</p>
+                <p>
+                    {{collection.description}}
+                </p>
+            </div>
+        </div>
+    </div>
+    <nav class="navbar navbar-default navbar-secondary navbar-fixed-inline" role="navigation">
+        <div>
+            <nav class="navbar-collapse collapse" ng-class="{'in':!navCollapsed}">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a ng-href="/collection/{{collectionId}}/assets/">Assets</a>
+                    </li>
+                    <li class="active">
+                        <a ng-href="/collection/{{collectionId}}/members/">Members</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </nav>
+    <div class="row">
+        <asset-stage assets="assets">
+            <div id="collections-center">
+                <div class="members row">
+                    <div class="col-md-6">
+                        <div>{{collection.memberCount}} member(s)</div>
+                    </div>
+                </div>
+                <div>
+                    <div id="results-table" class="membership" ng-if="membersGrid.options.loaded" kendo-grid k-options="membersGrid.options"></div>
+                </div>
+            </div>
+        </asset-stage>
+    </div>
+</loading>
+<script id="memberRowTemplate" type="text/x-kendo-template">
+    <tr>
+        <td ng-class="{ owner: dataItem.isOwner}">
+            <i class="fa fa-user fa-fw text-left" ng-if="dataItem.isOwner"></i>{{
+            dataItem.firstName
+            }}
+        </td>
+        <td ng-class="{ owner: dataItem.isOwner}">{{dataItem.lastName}}</td>
+        <td>
+            <span ng-click="sendEmail(dataItem.email)">
+                <span class="psuedo-link-effect fa fa-envelope"></span>
+            </span>
+            <a href="mailto:{{dataItem.email}}">{{dataItem.email}}</a>
+        </td>
+        <td>{{dataItem.role}}</td>
+        <td>{{dataItem.addedOn | date : 'M/d/yy'}} </td>
+    </tr>
+</script>

@@ -1,0 +1,41 @@
+﻿<div class="asset-card-tile {{conditionalClass()}}"
+     ng-class="{ 'selected': asset.selected }">
+    <div class="top clearfix" ng-if="!isHomePage()">
+        <div class="pull-left">
+            <moby-checkbox selected="asset.selected"></moby-checkbox>
+        </div>
+        <div class="pull-right">
+            <video-stream asset="asset" class="pull-left" ng-click="$event.stopPropagation()"></video-stream>
+            <a title="Add to Collection"
+               ng-if="permissions.collectionAssetAdd && isACollectionOwner"
+               ng-click="showAddAssetsToCollectionDialog(asset)">
+                <i class="fa fa-plus-circle"></i>
+            </a>
+
+            <a title="Share"
+               ng-if="permissions.assetDownload">
+                <i class="fa fa-envelope"></i>
+            </a>
+
+            <download-asset title="Download Asset" class="pull-right" ng-if="permissions.assetDownload">
+            </download-asset>
+          
+        </div>
+    </div>
+    <div ng-click="showDetail()">
+        <div class="image" ng-class="{'restricted': hasRestrictions(asset), revised: hasRevisions(asset) }">
+            <thumbnail-placeholder image-url="asset.thumb"></thumbnail-placeholder>
+            <div class="overlay" data-description="overlay layer">
+                <revision datasource="asset"></revision>
+                <div class="restricted-icon" ng-if="asset.usageRestrictions && asset.usageRestrictions.length !== 0">
+                    <i class="mb mb-restricted"></i>
+                </div>
+                <video-stream asset="asset" class="pull-left" ng-click="$event.stopPropagation()"></video-stream>
+            </div>
+        </div>
+
+        <asset-tile-metadata></asset-tile-metadata>
+    </div>
+
+    <collections-badge collections="asset.collections"></collections-badge>
+</div>

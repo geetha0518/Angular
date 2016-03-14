@@ -1,0 +1,82 @@
+﻿<div class="filters">
+    <div id="search-filter">
+        <div class="row">
+            <search-bar plus-button query-min-length="2" search-terms="searchBarSearchTerms"
+                        clear-on-submit="true" name="left-pane-search"></search-bar>
+        </div>
+        <div class="row">
+            <label>
+                <i class="cal-icon fa fa-calendar fa-fw text-left"></i>
+                Date Uploaded
+            </label>
+            <span>
+                <a class="sidebar-filter-action-link" ng-click="clearDates()" href="#">clear all</a>
+            </span>
+            <date-range-filter from-date="searchParams.dateUploadedRange.start"
+                               to-date="searchParams.dateUploadedRange.end"
+                               apply-filter="refreshFilters">
+            </date-range-filter>
+        </div>
+        <div class="row" ng-show="searchParams.filters.length > 0">
+            <label>Search Terms</label>
+            <ul class="search-terms">
+                <li ng-repeat="group in filtersByField">
+                    <h5 class="display-field" ng-if="isFoxSports(group.field)">
+                        {{group.field | displayName}}
+                    </h5>
+                    <h5 class="display-field" ng-if="!isFoxSports(group.field)">
+                        {{group.displayField}}
+                    </h5>
+                    <ul>
+                        <li ng-repeat="filter in group.filters">
+                            <div class="display-term" ng-if="isFoxSports(filter.field)" title="{{filter.term | formatTerm:filter.field}}">
+                                {{(filter.term | formatTerm:filter.field) | shorten:20}}
+                                <i class="glyphicon glyphicon-remove pull-right" ng-click="removeFilter(filter)"></i>
+                            </div>
+                            <div class="display-term" ng-if="!isFoxSports(filter.field)" title="{{filter.displayTerm}}">
+                                {{filter.displayTerm | shorten:20}}
+                                <i class="glyphicon glyphicon-remove pull-right" ng-click="removeFilter(filter)"></i>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <label>Filter By Category:</label>
+            <a class="sidebar-filter-action-link" ng-click="toggleNavigatorExpanded()" href="#">{{allExpanded ? 'close all' : 'expand all'}}</a>
+        </div>
+        <fix-scroll-height class="row bycategory">
+            <div class="filters">
+                <accordion close-others="false">
+                    <accordion-group ng-repeat="navigator in navigators" ng-init="firstStatus()" is-open="navigator.isExpanded" ng-click="checkExpanded(navigator)">
+                        <accordion-heading>
+                            <div>
+                                <span class="navigator-field">{{navigator.displayField}}</span>
+                                <span class="navigator-toggle pull-right">
+                                    <span id="active-term" class="badge" ng-show="activeTermCount(navigator) > 0">{{activeTermCount(navigator)}}</span>
+                                    <i class="glyphicon" ng-class="{'glyphicon-chevron-down': navigator.isExpanded, 'glyphicon-chevron-right': !navigator.isExpanded}"></i>
+                                </span>
+                            </div>
+                        </accordion-heading>
+                        <ul class="nav nav-sidebar">
+                            <li ng-repeat="term in navigator.terms | orderBy:formatSortSpecial:sortReverse(navigator) " ng-if="notNull(term.value)">
+                                <label class="search-term">
+                                    <div class="term-checkbox">
+                                        <checkbox class="btn-normal" ng-model="term.isChecked" ng-change="searchTermToggled(term,navigator.field)"></checkbox>
+                                    </div>
+                                    <div class="value">
+                                        {{term.value | formatTerm:navigator.field}}
+                                    </div>
+                                    <div class="count" ng-if="term.count > 0">
+                                        <span class="badge">{{term.count}}</span>
+                                    </div>
+                                </label>
+                            </li>
+                        </ul>
+                    </accordion-group>
+                </accordion>
+            </div>
+        </fix-scroll-height>
+    </div>
+</div>

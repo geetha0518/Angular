@@ -1,0 +1,27 @@
+﻿<ul class="metadata">
+    <li class="title">
+        <div id="asset-preview-name">
+            <a ng-click="viewAssetDetails(asset.assetId)"
+               tooltip-speed="fast" tooltip="{{asset.fileName}}">
+                {{asset.fileName}}
+            </a>
+
+            <span class="hover fa-stack fa-lg zip-contents-icon"
+                  ng-if="asset.fileExtension === 'ZIP'"
+                  ng-click="openZipDialog(asset)"
+                  tooltip-speed="fast" tooltip="Open zip dialog for {{asset.fileName}}">
+                <i class="fa fa-file-o fa-stack-2x"></i>
+                <i class="fa fa-search fa-stack-1x" style="top: 2px;"></i>
+            </span>
+        </div>
+    </li>
+    <li class="file_type">
+        <file-icon asset="asset"></file-icon>
+        {{ asset.assetType }}
+    </li>
+    <li ng-if="asset.fileSize && (ClientUserService.isFmc || ClientUserService.isFic   )">File Size: {{ asset.fileSize | filesize:2 }}</li>
+
+    <fmc-quickview-metadata ng-if="ClientUserService.isFmc"></fmc-quickview-metadata>
+    <fic-quickview-metadata ng-if="ClientUserService.isFic"></fic-quickview-metadata>
+    <fox-sports-quickview-metadata ng-if="ClientUserService.isFoxSports"></fox-sports-quickview-metadata>
+</ul>

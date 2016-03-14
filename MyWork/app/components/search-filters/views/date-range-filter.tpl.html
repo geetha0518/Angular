@@ -1,0 +1,18 @@
+<div class="date-range-filter">
+    <div class="date-uploaded">
+            <input class="date-start form-control" type="text" placeholder="From" datepicker-popup="{{dateFormat}}"
+                   ng-model="fromDate" is-open="startOpened" min-date="minDate" max-date="maxDate"
+                   close-text="Close" ng-click="startOpened = true" />
+            <input class="date-end form-control " type="text" placeholder="To" datepicker-popup="{{dateFormat}}"
+               ng-model="toDate" is-open="endOpened"
+                   ng-model="toDate" is-open="endOpened" min-date="minDate" max-date="maxDate" 
+                   close-text="Close" ng-click="endOpened = true" />
+        <button href="#" id="apply-date-filter" class="btn btn-primary date-go" ng-click="applyFilter()" ng-disabled="hasDateError">
+            Go
+        </button>
+
+    </div>
+</div>
+<div class="date-error alert alert-danger" role="alert" ng-show="hasDateError">
+    <i class="glyphicon glyphicon-warning-sign"></i> Start date must be before end date.
+</div>

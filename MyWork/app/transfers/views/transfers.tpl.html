@@ -1,0 +1,74 @@
+﻿<div class="collection-details">
+    <div class="row">
+        <div class="col-md-12">
+            <loading isloading="loadingTransfers"></loading>
+        </div>
+    </div>
+    <div ng-if="!loadingTransfers">
+        <div class="row">
+            <div class="page-header col-md-12">
+                <div>
+                    <h3>
+                        <a href="" class="detail" ng-click="toggleFavorite(dataItem)">
+                            <i class="glyphicon" ng-class="{'glyphicon-star-empty': !collection.isFavorite, 'glyphicon-star': collection.isFavorite}"></i>
+                        </a>
+                        Transfers Report
+                    </h3>
+                    <p>View pending pushed and failed auto transfers</p>
+                </div>
+            </div>
+        </div>
+        <div class="row bulk-general-actions" ng-show="user.permissions.foxSportsRepush">
+            <div class="action-bar col-md-12" role="group" style="padding: 5px 0 6px 50px;">
+                <button class="btn btn-bulk" style="padding: 2px 5px;" ng-disabled="!areAnyAssetsChecked()" ng-click="openConfirmModal()">
+                    <i class="fa fa-arrow-circle-right fa-fw"></i><span class="display-action-names">Repush Assets</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div style="margin-top: 10px;">
+        <div id="results-table" class="membership" ng-if="transfersGrid.options.loaded" kendo-grid k-options="transfersGrid.options"></div>
+    </div>
+</div>
+
+<!-- Confirm Modal-->
+<script type="text/ng-template" id="repushConfirmModal">
+    <div class="repushModal">
+        <div class="modal-header">
+            <h3 class="modal-title">Repush Assets</h3>
+        </div>
+        <div class="modal-body">
+            <div style="width:100%;text-align:center" ng-show="!isLoading">{{ message }}</div>
+            <div class="loading" ng-show="isLoading">
+                <div class="dot"></div>
+                <div class="dot2"></div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-warning" ng-show="!isPostComplete && !isLoading" ng-click="cancel()">Cancel</button>
+            <button class="btn btn-success" ng-show="!isPostComplete && !isLoading" ng-click="repushOnClick()">Repush</button>
+            <button class="btn btn-warning" ng-show="isPostComplete" ng-click="closeModal()">Close</button>
+        </div>
+    </div>
+</script>
+
+<!-- Row Template -->
+<script id="transfersRowTemplate" type="text/x-kendo-template">
+    <tr>
+        <td ng-show="user.permissions.foxSportsRepush"><input type="checkbox" ng-model="checkedIds[dataItem.id]" /></td>
+        <td>
+            <a ng-click="viewAssetDetails(dataItem.assetId , dataItem.filename)"
+               title="{{ dataItem.filename}}"
+               class="previewlabel">
+                {{ dataItem.filename | shorten:30:4 }}
+            </a>
+        </td>
+        <td>{{ dataItem.transactionId }}</td>
+        <td>{{ dataItem.submittedBy }}</td>
+        <td>{{ dataItem.submittedDate | date:'MM/dd/yyyy hh:mm:ss a' }}</td>
+
+        <td ng-class="{ 'transfer-error' :isFailedTransfer(dataItem) }">{{ dataItem.status }}</td>
+        <td>{{ dataItem.statusDate | date:'MM/dd/yyyy hh:mm:ss a' }}</td>
+        <td>{{ dataItem.deliveredTo }}</td>
+    </tr>
+</script>

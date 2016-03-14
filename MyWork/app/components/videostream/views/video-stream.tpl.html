@@ -1,0 +1,15 @@
+﻿<div style="width: 400px;">
+    <div id="download-dialog-header" class="modal-header">
+        <i class="glyphicon glyphicon-remove pull-right hover" ng-click="closeModal()"></i>
+        <h3 class="modal-title" ng-bind="modalData.title"></h3>
+    </div>
+    <div id="akamai-media-player" ng-show="modalData.title === 'Asset Preview'"></div>
+    <div class="loading" ng-show="modalData.title === 'Loading'">
+        <div class="dot"></div>
+        <div class="dot2"></div>
+    </div>
+    <div ng-show="modalData.title === 'An error has occured'">
+        <span class="video-stream-na"></span>
+        <p class="text-center">Preview is currently not available for this video. </p>
+    </div>
+</div>

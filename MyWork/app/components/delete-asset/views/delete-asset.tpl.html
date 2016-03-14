@@ -1,0 +1,76 @@
+﻿<div class="add-to-collection">
+    <div ng-show="(!submitted && !hasError()) && !success && !error">
+        <div class="modal-header">
+            <i class="fa fa-times-circle fa-2x pull-right hover" ng-click="closeModal()"></i>
+            <h3 class="modal-title">Are you sure you want to delete?</h3>
+
+            <div id="download-dialog-body" class="modal-body cle">
+                <div>
+                    <table ng-show="assetsToDelete.length > 0" class="table">
+                        <thead>
+                            <tr>
+                                <th class="asset-information">Asset Information</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="asset in assetsToDelete">
+                                <td>
+                                    <div class="asset-info">
+                                        <div>
+                                            <div><b>Asset Name - <a href="#" title="{{hoverTitle(asset)}}"> <span>{{asset.searchedAsset.fileName | shorten:60:20}}</span></a></b></div>
+                                            <div>Asset Id - <a href="#" title="{{hoverTitle(asset)}}"><span> {{asset.searchedAsset.assetId}}</span></a></div>
+                                            <div>Esprit Id - <span> {{asset.searchedAsset.espritId}}</span></div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bulk-add-response" ng-if="(submitted && !hasError()) || success" style="margin-left:20px;">
+        <div class="modal-header">
+            <i class="fa fa-times-circle fa-2x pull-right" ng-click="closeModal()"></i>
+            <h3 class="modal-title text-left" ng-if="assets.length !== 1">Deleted</h3>
+        </div>
+        <h4 style="margin-top:20px;">Success!</h4>
+
+        <ul>
+            <li ng-repeat="asset in assetsToDelete | orderBy :'assetName'">
+                <i class="fa fa-times remove hover pull-right" ng-if="assetsToDelete.length > 1" ng-click="removeAsset(asset)"></i>
+                <a href="#" title="{{hoverTitle(asset)}}">
+                    {{asset.searchedAsset.fileName  | shorten:50:10}}
+                </a>
+            </li>
+        </ul>
+        <p>
+            You've successfully deleted assets.
+        </p>
+        <p>
+            <i class="fa fa-check-circle fa-2x success-color"></i>
+            <span>{{addedAssetCount}} {{'Asset' | pluralize:addedAssetCount}} deleted</span>
+        </p>
+    </div>
+
+    <div class="well" ng-show="hasError() || error" style="color:red;">
+        <i class="fa fa-warning fa-2x warning-color"></i> <b> "You dont have rights to delete asset. Delete Unsuccessful"</b>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn" ng-class="{'btn-success': started, 'btn-warning': !started}"
+                ng-click=" delete(asset)" ng-hide="!hidebutton">
+            <i class="glyphicon glyphicon-trash glyphicon-fw"></i>
+            {{buttontext}}
+        </button>
+        <button class=" btn btn-primary btn-success" ng-click="closepopup()" ng-show="deletesuccess">
+            <i class="glyphicon glyphicon-remove glyphicon-fw"></i>
+            Close
+        </button>
+        <button class="btn btn-warning" ng-hide="!hideDeleteCancelButton" ng-click="closeModal()" style="float:left;width:40px;">
+            No
+        </button>
+    </div>
+</div>

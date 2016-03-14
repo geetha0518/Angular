@@ -1,0 +1,25 @@
+﻿<div class="suggestions-dialog">
+    <div class="modal-header">
+        <i class="fa fa-times-circle fa-2x pull-right hover" ng-click="closeModal()"></i>
+        <h3 class="modal-title">Select Terms to Filter your Search</h3>
+    </div>
+    <div class="modal-body">
+        <div ng-repeat="prompt in prompts">
+            <div class="prompt">
+                <h4>{{prompt.displayField | pluralize:prompt.totalResults}}</h4>
+                <div class="suggestion"
+                     ng-repeat="suggestion in prompt.suggestions"
+                     ng-class="{selected: suggestion.selected }"
+                     ng-class-odd="'zebra-stripe'">
+                    <moby-checkbox selected="suggestion.selected"></moby-checkbox>
+                    <spani class="term">{{suggestion.displayTerm}}</spani>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" ng-click="applyFilters()">
+            <span class="glyphicon glyphicon-filter"></span> Filter Search by Selected Items
+        </button>
+    </div>
+</div>

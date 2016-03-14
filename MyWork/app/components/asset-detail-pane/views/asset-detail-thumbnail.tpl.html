@@ -1,0 +1,13 @@
+﻿<div class="image asset-detail-thumb" ng-class="{'restricted': hasRestrictions}">
+    <div ng-if="allowZoom" class="image-search-icon">
+        <span class="glyphicon glyphicon-search"></span>
+    </div>
+
+    <i ng-if="hasRestrictions" class="mb mb-restricted"></i>
+    
+    <loading isloading="isThumbnailLoading">
+        <thumbnail-placeholder image-url="thumbImageUrl"></thumbnail-placeholder>
+    </loading>
+
+    <image-zoom image-url="zoomImageUrl" enable="allowZoom" background-color="'white'" offset-x="zoomOffsetX" offset-y="0" is-loading="isZoomLoading"></image-zoom>
+</div>

@@ -1,0 +1,200 @@
+﻿<div id="downloadPlugin" style="display: none;"></div>
+<div class="loading" ng-show="isAsperaLoading">
+    <div class="dot"></div>
+    <div class="dot2"></div>
+</div>
+<div ng-if="!isAsperaLoading">
+    <div id="download-dialog-header" class="modal-header">
+        <i class="fa fa-times-circle fa-2x pull-right hover" ng-click="closeModal()"></i>
+        <h3 class="modal-title">Download Files</h3>
+
+        <div id="download-dialog-body" class="modal-body cle">
+            <div>
+                <table class="table">
+                    <tbody>
+                        <tr ng-repeat="asset in currentDownloads" class="active" ng-if="asset.sourceChecked || asset.previewChecked">
+                            <td>
+                                <div class="asset-image">
+                                    <img ng-show="asset.thumb" ng-src="{{asset.thumb}}" width="140" />
+                                    <img ng-show="!asset.thumb" ng-src="/Content/Images/no-image.png" width="140" />
+                                    <div ng-if="asset.usageRestrictions" class="overlay">
+                                        <i class="mb mb-restricted"></i>
+                                    </div>
+                                </div>
+                                <div class="asset-info">
+                                    <div><b>{{asset.fileName}}</b></div>
+                                    <div ng-show="asset.sourceChecked">Source</div>
+                                    <div ng-show="asset.previewChecked">Preview</div>
+                                    <div ng-show="xmlChecked">XML</div>
+                                </div>
+                            </td>
+                            <td class="text-right" style="width: 400px;">
+                                <div>
+                                    <div ng-show="asset.transfer.timeRemaining > 0">
+                                        {{asset.transfer.timeRemaining | timestamp}} remaining
+                                    </div>
+                                    <progressbar class="progress-striped" animate="true" value="asset.transfer.progress" type="success" ng-show="!downloadFinished">
+                                        <b>{{asset.transfer.progress | number:0}}%</b>
+                                    </progressbar>
+                                    <span ng-click="showContainingFolder(asset.transfer.uuid)">
+                                        <span class="psuedo-link-effect fa fa-folder-open"></span>
+                                    </span>
+                                </div>
+                                <div>{{asset.transfer.status}}</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table ng-show="assetsToTransfer.length > 0" class="table">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Remove</th>
+                            <th class="asset-information">Asset Information</th>
+                            <th class="text-center">
+                                <moby-checkbox ng-if="assetsToTransfer.length > 1" class="btn-normal" 
+                                               selected="selectAll.source" disabled="isDisabled" ng-change="checkedSource()" ></moby-checkbox>
+                                {{downloadLabels.source}}
+                            </th>
+                            <th class="text-center">
+                                <moby-checkbox ng-if="ShowPreviewChecked()" class="btn-normal"
+                                               selected="selectAll.preview" disabled="isDisabled"  ng-change="checkedPreview()"></moby-checkbox>
+                                {{downloadLabels.preview}}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="asset in assetsToTransfer">
+
+                            <td ng-hide="myRow" class="text-center">
+                                <h3 ng-click="removeToTransfer(asset)" class="glyphicon glyphicon-remove btn-lg hover orange-text"> </h3>
+                            </td>
+
+                            <td>
+                                <div class="asset-image">
+                                    <img ng-show="asset.thumb" ng-src="{{asset.thumb}}" width="140" />
+                                    <img ng-show="!asset.thumb" ng-src="/Content/Images/no-image.png" width="140" />
+                                    <div ng-if="asset.usageRestrictions" class="overlay">
+                                        <i class="mb mb-restricted"></i>
+                                    </div>
+                                </div>
+                                <div class="asset-info">
+                                    <div>
+                                        <div><b>{{asset.fileName | shorten:60:20}}</b></div>
+                                        <div>{{asset.assetType}}</div>
+                                        <div>{{asset.espritId}}</div>
+                                        <div ng-show="asset.usageRestrictions">
+                                            <div>Restricted</div>
+                                            <div ng-if="!asset.showMore">{{asset.usageRestrictions | shorten:80}}</div>
+                                            <div ng-if="asset.showMore">{{asset.usageRestrictions}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="show-more orange-text hover" ng-show="!asset.showMore" ng-click="toggleShowMore(asset)">
+                                        Show More Information
+                                        <i class="glyphicon glyphicon-chevron-down"></i>
+                                    </div>
+                                    <div ng-show="asset.showMore">
+                                        <div ng-show="asset.division">{{asset.division}}</div>
+                                        <div ng-show="asset.department">{{asset.department}}</div>
+                                        <div class="show-less orange-text hover" ng-show="asset.showMore" ng-click="toggleShowMore(asset)">
+                                            Show Less Information
+                                            <i class="glyphicon glyphicon-chevron-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td class="text-center" ng-class="{'selected': asset.sourceChecked && hasSource(asset)  && !isDisabled}" >
+                                <div ng-if="hasSource(asset)" >
+                                    <a class="moby-checkbox hover btn-normal" ng-model="asset.sourceChecked" btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" disabled="isDisabled"
+                                       ng-click="$event.stopPropagation()" ng-class="{'mb-checkbox-disabled':disabled }" ng-change="checked(assetsToTransfer.length)">
+                                        <i class="mb" ng-class="{'mb-checkbox-white': !(asset.sourceChecked), 'mb-checkbox-green':(asset.sourceChecked), 'mb-checkbox-disabled':disabled }"></i>
+                                    </a>
+                                    
+                                    {{ asset.fileSize | filesize:2 }}
+
+                                </div>
+                                <i ng-if="!hasSource(asset)" class="glyphicon glyphicon-ban-circle"></i>
+                            </td>
+
+                            <td class="text-center" ng-class="{'selected': asset.previewChecked && hasPreview(asset) && !isDisabled }" >
+                                <a ng-if="hasPreview(asset)" class="moby-checkbox hover btn-normal" ng-model="asset.previewChecked" btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false"
+                                   ng-click="$event.stopPropagation()" disabled="isDisabled" ng-class="{'mb-checkbox-disabled':disabled }" ng-change="chekedAsset(assetsToTransfer.length)">
+                                    <i class="mb" ng-class="{'mb-checkbox-white': !(asset.previewChecked), 'mb-checkbox-green':(asset.previewChecked), 'mb-checkbox-disabled':disabled }"></i>
+                                </a>
+                                
+                                <i ng-if="!hasPreview(asset)" class="glyphicon glyphicon-ban-circle"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div ng-show="overallTimeRemaining > 0" style="padding-left: 15px">
+            {{overallTimeRemaining}} Seconds Left
+        </div>
+        <progressbar class="progress-striped" animate="true" value="overallProgress" type="success" ng-show="!downloadFinished">
+            <b>{{overallProgress | number: 0}} %</b>
+        </progressbar>
+        <div class="progess-complete-message text-center" ng-show="downloadFinished">
+            Download Finished
+        </div>
+        <div ng-show="overallTimeRemaining > 0" style="padding-left: 15px">
+            {{ overallBytes_written  | filesize:2 }} / {{ overallBytes_expected  | filesize:2 }}
+        </div>
+    </div>
+
+    <div ng-show="hasError" class="modal-footer">
+        <h4 class="has-error">{{ errorHeader }} <span class="fa fa-exclamation" style="color: #ff0000;"></span></h4>
+        <div class="alert-danger" ng-if="hasError">Error: {{ serviceError }}</div>
+        <div>{{ errorSuggest }}</div>
+        <button class="btn alert-danger" ng-click="cancelDownload()">
+            <i class="glyphicon glyphicon-remove"></i> Close
+        </button>
+    </div>
+
+    <div ng-show="!hasError" id="download-dialog-footer" class="modal-footer">
+        <div ng-show="isLoading">Loading...</div>
+        <div ng-show="!isLoading">
+            <div class="pull-left text-left checkboxes">
+                <div ng-show="!hasAssetsTransfering() && !downloadFinished">
+                    <moby-checkbox class="btn-normal" selected="minimizeOnStart.value"></moby-checkbox>
+                    Automatically minimize lightbox while downloading
+                </div>
+
+                <div class="legend" ng-show="!hasAssetsTransfering() && !downloadFinished">
+                    <i class="glyphicon glyphicon-ban-circle glyphicon-fw"></i>
+                    <b>indicates selection Not Available</b>
+                </div>
+
+            </div>
+
+            <button class="minimize-download btn btn-primary btn-primary-reversed pull-left" ng-show="hasAssetsTransfering()" ng-click="minimizeFooter()">
+                <i class="glyphicon glyphicon-resize-small"></i>
+                Minimize Download Window
+            </button>
+            <button class="btn btn-primary btn-primary-reversed cancel-download" ng-show="hasAssetsTransfering()" ng-click="cancelDownload()">
+                <i class="glyphicon glyphicon-remove"></i> Cancel Download
+            </button>
+
+            <div ng-show="!hasAssetsTransfering() && !downloadFinished">
+                <moby-checkbox class="btn-normal" selected="xmlChecked.value"></moby-checkbox>
+                include XML metadata file for each asset ({{selectedAssets().length}})
+            </div>
+
+            <button class="start-download btn btn-primary"
+                    ng-click="startDownload()" ng-disabled="checkDisabledStart()" ng-show="!downloadFinished">
+                <i class="glyphicon glyphicon-download glyphicon-fw"></i>
+                {{downloadButtonText}} <span class="filesize" ng-show="overallBytes_expected > 0">{{overallBytes_expected | filesize:2}}</span>
+            </button>
+
+            <button class="start-download btn btn-primary" ng-click="closeModal()" ng-show="downloadFinished">
+                <i class="glyphicon glyphicon-remove glyphicon-fw"></i>
+                Close
+            </button>
+
+        </div>
+    </div>
+</div>
